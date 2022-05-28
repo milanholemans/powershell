@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Invoke-PnPSPRestMethod | PnP PowerShell </title>
+    <title>Get-PnPTeamsChannelFilesFolder | PnP PowerShell </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Invoke-PnPSPRestMethod | PnP PowerShell ">
+    <meta name="title" content="Get-PnPTeamsChannelFilesFolder | PnP PowerShell ">
     <meta name="generator" content="docfx 2.51.0.0">
     <meta name="description" content="PnP PowerShell is an open source, community driven, PowerShell Module designed to work with Microsoft 365.">
     <link rel="shortcut icon" href="https://c.s-microsoft.com/favicon.ico?v2">
@@ -77,112 +77,54 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-                
+                <div class="pnp_tags">Available in the current Nightly Release only.</div>
                   <div class="contribution-panel mobile-hide pull-right">
                       <a href="https://github.com/pnp/powershell/blob/dev/documentation/#L1" title="Improve this Doc" class="improve-doc-lg"><i class="glyphicon glyphicon-pencil"></i></a>
                   </div>
-                    <h1 id="invoke-pnpsprestmethod">Invoke-PnPSPRestMethod</h1>
+                    <h1 id="get-pnpteamschannelfilesfolder">Get-PnPTeamsChannelFilesFolder</h1>
 
 <h2 id="synopsis">SYNOPSIS</h2>
-<p>Invokes a REST request towards a SharePoint site</p>
+<p><strong>Required Permissions</strong></p>
+<ul>
+<li>Microsoft Graph API : Group.Read.All</li>
+</ul>
+<p>Gets the metadata for the location where the files of a channel are stored.</p>
 <h2 id="syntax">SYNTAX</h2>
-<pre><code class="lang-powershell">Invoke-PnPSPRestMethod -Url &lt;String&gt;
-                       [-Method &lt;HttpRequestMethod&gt;]
-                       [-Content &lt;Object&gt;]
-                       [-ContentType &lt;String&gt;]
-                       [-Raw]
-                       [-Connection &lt;PnPConnection&gt;]
+<pre><code class="lang-powershell">Get-PnPTeamsChannel [-Team &lt;TeamsTeamPipeBind&gt;] [-Channel &lt;TeamsChannelPipeBind&gt;] 
+ [&lt;CommonParameters&gt;]
 </code></pre>
 <h2 id="description">DESCRIPTION</h2>
-<p>Invokes a REST request towards a SharePoint site</p>
 <h2 id="examples">EXAMPLES</h2>
-<h3 id="------------------example-1------------------">------------------EXAMPLE 1------------------</h3>
-<pre><code class="lang-powershell">Invoke-PnPSPRestMethod -Url /_api/web
+<h3 id="example-1">EXAMPLE 1</h3>
+<pre><code class="lang-powershell">Get-PnPTeamsChannelFilesFolder -Team &quot;Sales Team&quot; -Identity &quot;Test Channel&quot;
 </code></pre>
-<p>This example executes a GET request towards the current site collection and returns the properties of the current web</p>
-<h3 id="------------------example-2------------------">------------------EXAMPLE 2------------------</h3>
-<pre><code class="lang-powershell">$output = Invoke-PnPSPRestMethod -Url '/_api/web/lists?$select=Id,Title'
-$output.value
+<p>Retrieves the folder metadata for the channel called 'Test Channel' located in the Team named 'Sales Team'</p>
+<h3 id="example-2">EXAMPLE 2</h3>
+<pre><code class="lang-powershell">Get-PnPTeamsChannelFilesFolder -Team a6c1e0d7-f579-4993-81ab-4b666f8edea8 -Identity &quot;19:796d063b63e34497aeaf092c8fb9b44e@thread.skype&quot;
 </code></pre>
-<p>This example executes a GET request towards the current site collection and returns the id and title of all the lists and outputs them to the console. Notice the use of single quotes. If you want to use double quotes (&quot;) then you will have to escape the $ character with a backtick: `$</p>
-<h3 id="------------------example-3------------------">------------------EXAMPLE 3------------------</h3>
-<pre><code class="lang-powershell">$item = @{Title=&quot;Test&quot;}
-Invoke-PnPSPRestMethod -Method Post -Url &quot;/_api/web/lists/GetByTitle('Test')/items&quot; -Content $item
-</code></pre>
-<p>This example creates a new item in the list 'Test' and sets the title field to 'Test'</p>
-<h3 id="------------------example-4------------------">------------------EXAMPLE 4------------------</h3>
-<pre><code class="lang-powershell">$item = &quot;{'Title':'Test'}&quot;
-Invoke-PnPSPRestMethod -Method Post -Url &quot;/_api/web/lists/GetByTitle('Test')/items&quot; -Content $item
-</code></pre>
-<p>This example creates a new item in the list 'Test' and sets the title field to 'Test'</p>
-<h3 id="------------------example-5------------------">------------------EXAMPLE 5------------------</h3>
-<pre><code class="lang-powershell">$item = &quot;{ '__metadata': { 'type': 'SP.Data.TestListItem' }, 'Title': 'Test'}&quot;
-Invoke-PnPSPRestMethod -Method Post -Url &quot;/_api/web/lists/GetByTitle('Test')/items&quot; -Content $item -ContentType &quot;application/json;odata=verbose&quot;
-</code></pre>
-<p>This example creates a new item in the list 'Test' and sets the title field to 'Test'</p>
+<p>Retrieves the folder metadata for the channel specified by its channel id</p>
 <h2 id="parameters">PARAMETERS</h2>
-<h3 id="-content">-Content</h3>
-<p>A string or object to send</p>
-<pre><code class="lang-yaml">Type: Object
-Parameter Sets: (All)
-
-Required: False
-Position: Named
-Accept pipeline input: False
-</code></pre>
-<h3 id="-contenttype">-ContentType</h3>
-<p>The content type of the object to send. Defaults to 'application/json'.</p>
-<pre><code class="lang-yaml">Type: String
-Parameter Sets: (All)
-
-Required: False
-Position: Named
-Accept pipeline input: False
-</code></pre>
-<h3 id="-method">-Method</h3>
-<p>The Http method to execute. Defaults to GET.</p>
-<pre><code class="lang-yaml">Type: HttpRequestMethod
-Parameter Sets: (All)
-
-Required: False
-Position: 0
-Accept pipeline input: False
-</code></pre>
-<h3 id="-url">-Url</h3>
-<p>The url to execute</p>
-<pre><code class="lang-yaml">Type: String
+<h3 id="-channel">-Channel</h3>
+<p>The id or name of the channel to retrieve.</p>
+<pre><code class="lang-yaml">Type: TeamsChannelPipeBind
 Parameter Sets: (All)
 
 Required: True
-Position: 0
+Position: Named
+Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
 </code></pre>
-<h3 id="-raw">-Raw</h3>
-<p>If specified the returned data will not be converted to an object but returned as a JSON string.</p>
-<pre><code class="lang-yaml">Type: SwitchParameter
+<h3 id="-team">-Team</h3>
+<p>Specify the group id, mailNickname or display name of the team to use.</p>
+<pre><code class="lang-yaml">Type: TeamsTeamPipeBind
 Parameter Sets: (All)
 
 Required: True
-Position: 0
-Accept pipeline input: False
-</code></pre>
-<h3 id="-accept">-Accept</h3>
-<p>The Accept HTTP request header. Defaults to 'application/json;odata=nometadata'.</p>
-<pre><code class="lang-yaml">Type: String
-Parameter Sets: (All)
-
-Required: False
 Position: Named
-Accept pipeline input: False
-</code></pre>
-<h3 id="-connection">-Connection</h3>
-<p>Optional connection to be used by the cmdlet. Retrieve the value for this parameter by either specifying -ReturnConnection on Connect-PnPOnline or by executing Get-PnPConnection.</p>
-<pre><code class="lang-yaml">Type: PnPConnection
-Parameter Sets: (All)
-
-Required: False
-Position: Named
-Accept pipeline input: False
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
 </code></pre>
 <h2 id="related-links">RELATED LINKS</h2>
 <p><a href="https://aka.ms/m365pnp">Microsoft 365 Patterns and Practices</a></p>
